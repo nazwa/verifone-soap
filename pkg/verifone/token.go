@@ -5,7 +5,7 @@ import (
 )
 
 type VgTokenRegistrationRequest struct {
-	XMLName xml.Name `xml:"vggeneratesessionrequest"`
+	XMLName xml.Name `xml:"vgtokenregistrationrequest"`
 	Xsi     string   `xml:"xmlns:xsi,attr"`
 	Xsd     string   `xml:"xmlns:xsd,attr"`
 	Ns      string   `xml:"xmlns,attr"`
@@ -55,7 +55,7 @@ func (this Client) RegisterToken(sessionGuid, merchantReference, expiryDate, tok
 		CashBack:            cashback,
 	}
 
-	err = this.call(MsgtypeRegisterToken, v, &response)
+	err = this.Call(MsgTypeRegisterToken, v, &response)
 
 	return
 }

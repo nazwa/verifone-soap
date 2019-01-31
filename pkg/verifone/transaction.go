@@ -82,7 +82,7 @@ const (
 )
 
 type VgTransactionRequest struct {
-	XMLName xml.Name `xml:"vggeneratesessionrequest"`
+	XMLName xml.Name `xml:"vgtransactionrequest"`
 	Xsi     string   `xml:"xmlns:xsi,attr"`
 	Xsd     string   `xml:"xmlns:xsd,attr"`
 	Ns      string   `xml:"xmlns,attr"`
@@ -216,7 +216,7 @@ type VgTransactionResponse struct {
 }
 
 func (this Client) TransactionRequest(v VgTransactionRequest) (response VgTokenRegistrationResponse, err error) {
-	err = this.call(MsgtypeRegisterToken, v, &response)
+	err = this.Call(MsgTypeTransaction, v, &response)
 
 	return
 }

@@ -19,10 +19,18 @@ func main() {
 		Url:        viper.GetString("verifone.Url"),
 	})
 
-	token, err := client.BeginSession()
+	session, err := client.BeginSession(viper.GetString("verifone.Redirect"), true)
 	if err != nil {
 		log.Println(err)
 	} else {
-		log.Println("token:", token)
+		log.Println("session:", session.SessionGUID, session.SessionPasscode)
 	}
+
+	token, err := client.RegisterToken(session.SessionGUID, "", "", "20022019", true, false, false)
+	if err != nil {
+		log.Println(err)
+	} else {
+		log.Println("token:", token.TokenId, token.ErrorCode, token.ErrorDescription)
+	}
+
 }

@@ -8,8 +8,11 @@ import (
 )
 
 const (
-	MsgTypeGenSession    = "VGGENERATESESSIONREQUEST"
-	MsgtypeRegisterToken = "VGTOKENREGISTRATIONREQUEST"
+	MsgTypeGenSession         = "VGGENERATESESSIONREQUEST"
+	MsgTypeRegisterToken      = "VGTOKENREGISTRATIONREQUEST"
+	MsgTypeTransaction        = "VGTRANSACTIONREQUEST"
+	MsgTypeConfirmTransaction = "VGCONFIRMATIONREQUEST"
+	MsgTypeRejectTransaction  = "VGREJECTIONREQUEST"
 
 	Xsi = "http://www.w3.org/2001/XMLSchema-instance"
 	Xsd = "http://www.w3.org/2001/XMLSchema"
@@ -58,7 +61,7 @@ type MessageClientHeader struct {
 	Passcode   string `xml:"Passcode"`
 }
 
-func (this Client) call(msgType string, msgData interface{}, target interface{}) (err error) {
+func (this Client) Call(msgType string, msgData interface{}, target interface{}) (err error) {
 	var body []byte
 	body, err = xml.Marshal(msgData)
 	if err != nil {
@@ -97,37 +100,4 @@ func (this Client) call(msgType string, msgData interface{}, target interface{})
 
 	err = xml.Unmarshal(response.ProcessMsgResult.MsgData, &target)
 	return
-}
-
-type MsgData struct {
-	XMLName xml.Name `xml:"MsgData"`
-	Content []byte   `xml:",cdata"`
-}
-
-type Message struct {
-	XMLName      xml.Name    `xml:"Message"`
-	ClientHeader interface{} `xml:"ClientHeader"`
-	MsgType      string      `xml:"MsgType"`
-	MsgData      MsgData     `xml:"MsgData"`
-}
-
-type ProcessMsg struct {
-	XMLName xml.Name `xml:"ProcessMsg"`
-	Ns      string   `xml:"xmlns,attr"`
-	Message interface{}
-}
-
-type ProcessMsgResult struct {
-	MsgType string `xml:"MsgType"`
-	MsgData []byte `xml:"MsgData"`
-}
-
-type ProcessMsgResponse struct {
-	ProcessMsgResult ProcessMsgResult `xml:"ProcessMsgResult"`
-}
-
-type ErrorResponse struct {
-	XMLName     xml.Name `xml:"ERROR"`
-	Code        int64    `xml:"CODE"`
-	Description string   `xml:"MSGTXT"`
 }

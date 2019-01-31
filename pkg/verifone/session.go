@@ -36,7 +36,7 @@ func (this Client) BeginSession(returnUrl string, fullCapture bool) (response Vg
 		FullCapture: fullCapture,
 	}
 
-	err = this.call(MsgTypeGenSession, v, &response)
+	err = this.Call(MsgTypeGenSession, v, &response)
 
 	return
 }
