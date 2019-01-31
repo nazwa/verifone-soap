@@ -4,8 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"log"
-
-	"github.com/tiaguinho/gosoap"
+	"verifone-soap/pkg/gosoap"
 )
 
 const (
@@ -63,6 +62,17 @@ func (this Client) getClientHeader() gosoap.Params {
 	}
 }
 
+type MsgData struct {
+	XMLName xml.Name `xml:"MsgData"`
+	Content string   `xml:",cdata"`
+}
+
+type Request struct {
+	ClientHeader interface{} `xml:"ClientHeader"`
+	MsgType      string      `xml:"MsgType"`
+	MsgData      MsgData     `xml:"MsgData"`
+}
+
 func (this Client) call(msgType string, msgData interface{}, target interface{}) (err error) {
 	var body []byte
 	body, err = xml.Marshal(msgData)
@@ -76,8 +86,14 @@ func (this Client) call(msgType string, msgData interface{}, target interface{})
 	params := gosoap.Params{
 		"ClientHeader": this.getClientHeader(),
 		"MsgType":      msgType,
-		"MsgData":      cdata,
+		"MsgData":      MsgData{Content: cdata},
 	}
+
+	// r := Request{
+	// 	ClientHeader: this.getClientHeader(),
+	// 	MsgType:      msgType,
+	// 	MsgData:      MsgData{Content: cdata},
+	// }
 
 	if err = this.soap.Call("ProcessMsg", params); err != nil {
 		return
