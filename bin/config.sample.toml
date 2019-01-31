@@ -1,0 +1,5 @@
+[verifone]
+"SystemID" = ""
+"SystemGUID" = """
+"Passcode" = ""
+"Url" = "https://txn-cst.cxmlpg.com/XML4/commideagateway.asmx?WSDL"
