@@ -54,8 +54,8 @@ func NewClient(cfg Config) *Client {
 	}
 }
 
-func (this Client) getClientHeader() gosoap.Params {
-	return gosoap.Params{
+func (this Client) getClientHeader() map[string]string {
+	return map[string]string{
 		"SystemGUID": this.config.SystemGUID,
 		"SystemID":   this.config.SystemID,
 		"Passcode":   this.config.Passcode,
@@ -83,19 +83,19 @@ func (this Client) call(msgType string, msgData interface{}, target interface{})
 	//cdata := "<![CDATA[" + string(body) + "]]"
 	cdata := string(body)
 
-	params := gosoap.Params{
-		"ClientHeader": this.getClientHeader(),
-		"MsgType":      msgType,
-		"MsgData":      MsgData{Content: cdata},
-	}
-
-	// r := Request{
-	// 	ClientHeader: this.getClientHeader(),
-	// 	MsgType:      msgType,
-	// 	MsgData:      MsgData{Content: cdata},
+	// params := gosoap.Params{
+	// 	"ClientHeader": this.getClientHeader(),
+	// 	"MsgType":      msgType,
+	// 	"MsgData":      MsgData{Content: cdata},
 	// }
 
-	if err = this.soap.Call("ProcessMsg", params); err != nil {
+	r := Request{
+		//ClientHeader: this.getClientHeader(),
+		MsgType: msgType,
+		MsgData: MsgData{Content: cdata},
+	}
+
+	if err = this.soap.Call("ProcessMsg", r); err != nil {
 		return
 	}
 

@@ -3,6 +3,7 @@ package gosoap
 import (
 	"encoding/xml"
 	"fmt"
+	"log"
 	"reflect"
 	"strconv"
 )
@@ -41,7 +42,20 @@ func (c Client) MarshalXML(e *xml.Encoder, _ xml.StartElement) error {
 		return err
 	}
 
-	recursiveEncode(c.Params)
+	for _, t := range tokens {
+		err := e.EncodeToken(t)
+		if err != nil {
+			return err
+		}
+	}
+
+	// recursiveEncode(c.Params)
+	encodedParams, err := xml.Marshal(c.Params)
+	if err != nil {
+		return err
+	}
+
+	tokens = []xml.Token{}
 
 	//end envelope
 	endBody(c.Method)

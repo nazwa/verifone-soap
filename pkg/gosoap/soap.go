@@ -49,7 +49,7 @@ type Client struct {
 	URL          string
 	Method       string
 	SoapAction   string
-	Params       Params
+	Params       interface{}
 	HeaderName   string
 	HeaderParams HeaderParams
 	Definitions  *wsdlDefinitions
@@ -67,7 +67,7 @@ func (c *Client) GetLastRequest() []byte {
 }
 
 // Call call's the method m with Params p
-func (c *Client) Call(m string, p Params) (err error) {
+func (c *Client) Call(m string, p interface{}) (err error) {
 	if c.Definitions == nil {
 		return errors.New("WSDL definitions not found")
 	}
