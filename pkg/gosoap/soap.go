@@ -3,10 +3,8 @@ package gosoap
 import (
 	"bytes"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -14,28 +12,17 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
-// HeaderParams holds params specific to the header
-type HeaderParams map[string]string
-
-// Params type is used to set the params in soap request
-type Params map[string]interface{}
+const Doctype = `<?xml version="1.0" encoding="UTF-8"?>` + "\n"
 
 // SoapClient return new *Client to handle the requests with the WSDL
-func SoapClient(wsdl string) (*Client, error) {
-	_, err := url.Parse(wsdl)
-	if err != nil {
-		return nil, err
-	}
-
-	d, err := getWsdlDefinitions(wsdl)
+func SoapClient(apiUrl string) (*Client, error) {
+	_, err := url.Parse(apiUrl)
 	if err != nil {
 		return nil, err
 	}
 
 	c := &Client{
-		WSDL:        wsdl,
-		URL:         strings.TrimSuffix(d.TargetNamespace, "/"),
-		Definitions: d,
+		URL: strings.TrimSuffix(apiUrl, "/"),
 	}
 
 	return c, nil
@@ -44,21 +31,11 @@ func SoapClient(wsdl string) (*Client, error) {
 // Client struct hold all the informations about WSDL,
 // request and response of the server
 type Client struct {
-	HttpClient   *http.Client
-	WSDL         string
-	URL          string
-	Method       string
-	SoapAction   string
-	Params       interface{}
-	HeaderName   string
-	HeaderParams HeaderParams
-	Definitions  *wsdlDefinitions
-	Body         []byte
-	Header       []byte
-	Username     string
-	Password     string
-
-	payload []byte
+	HttpClient *http.Client
+	URL        string
+	HeaderName string
+	Body       []byte
+	payload    []byte
 }
 
 // GetLastRequest returns the last request
@@ -67,34 +44,28 @@ func (c *Client) GetLastRequest() []byte {
 }
 
 // Call call's the method m with Params p
-func (c *Client) Call(m string, p interface{}) (err error) {
-	if c.Definitions == nil {
-		return errors.New("WSDL definitions not found")
+func (c *Client) Call(p interface{}) (err error) {
+	r := RequestSoapEnvelope{
+		Xsi:  "http://www.w3.org/2001/XMLSchema-instance",
+		Xsd:  "http://www.w3.org/2001/XMLSchema",
+		Soap: "http://schemas.xmlsoap.org/soap/envelope/",
+		Body: RequestSoapBody{
+			Content: p,
+		},
 	}
 
-	if c.Definitions.Services == nil {
-		return errors.New("No Services found in WSDL definitions")
-	}
-
-	c.Method = m
-	c.Params = p
-	c.SoapAction = c.Definitions.GetSoapActionFromWsdlOperation(c.Method)
-	if c.SoapAction == "" {
-		c.SoapAction = fmt.Sprintf("%s/%s", c.URL, c.Method)
-	}
-
-	c.payload, err = xml.MarshalIndent(c, "", "    ")
+	c.payload, err = xml.MarshalIndent(r, "", "    ")
 	if err != nil {
 		return err
 	}
-	log.Println(string(c.payload))
-	return
-	b, err := c.doRequest(c.Definitions.Services[0].Ports[0].SoapAddresses[0].Location)
+	c.payload = []byte(Doctype + string(c.payload))
+
+	b, err := c.doRequest()
 	if err != nil {
 		return err
 	}
 
-	var soap SoapEnvelope
+	var soap ResponseSoapEnvelope
 	// err = xml.Unmarshal(b, &soap)
 	// error: xml: encoding "ISO-8859-1" declared but Decoder.CharsetReader is nil
 	// https://stackoverflow.com/questions/6002619/unmarshal-an-iso-8859-1-xml-input-in-go
@@ -105,7 +76,6 @@ func (c *Client) Call(m string, p interface{}) (err error) {
 	err = decoder.Decode(&soap)
 
 	c.Body = soap.Body.Contents
-	c.Header = soap.Header.Contents
 
 	return err
 }
@@ -116,7 +86,7 @@ func (c *Client) Unmarshal(v interface{}) error {
 		return fmt.Errorf("Body is empty")
 	}
 
-	var f Fault
+	var f ResponseSoapFault
 	xml.Unmarshal(c.Body, &f)
 	if f.Code != "" {
 		return fmt.Errorf("[%s]: %s", f.Code, f.Description)
@@ -125,16 +95,12 @@ func (c *Client) Unmarshal(v interface{}) error {
 	return xml.Unmarshal(c.Body, v)
 }
 
-// doRequest makes new request to the server using the c.Method, c.URL and the body.
+// doRequest makes new request to the server using c.URL and the body.
 // body is enveloped in Call method
-func (c *Client) doRequest(url string) ([]byte, error) {
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(c.payload))
+func (c *Client) doRequest() ([]byte, error) {
+	req, err := http.NewRequest("POST", c.URL, bytes.NewBuffer(c.payload))
 	if err != nil {
 		return nil, err
-	}
-
-	if c.Username != "" && c.Password != "" {
-		req.SetBasicAuth(c.Username, c.Password)
 	}
 
 	if c.HttpClient == nil {
@@ -145,7 +111,6 @@ func (c *Client) doRequest(url string) ([]byte, error) {
 
 	req.Header.Add("Content-Type", "text/xml;charset=UTF-8")
 	req.Header.Add("Accept", "text/xml")
-	req.Header.Add("SOAPAction", c.SoapAction)
 
 	resp, err := c.HttpClient.Do(req)
 	if err != nil {
@@ -154,23 +119,4 @@ func (c *Client) doRequest(url string) ([]byte, error) {
 	defer resp.Body.Close()
 
 	return ioutil.ReadAll(resp.Body)
-}
-
-// SoapEnvelope struct
-type SoapEnvelope struct {
-	XMLName struct{} `xml:"Envelope"`
-	Header  SoapHeader
-	Body    SoapBody
-}
-
-// SoapHeader struct
-type SoapHeader struct {
-	XMLName  struct{} `xml:"Header"`
-	Contents []byte   `xml:",innerxml"`
-}
-
-// SoapBody struct
-type SoapBody struct {
-	XMLName  struct{} `xml:"Body"`
-	Contents []byte   `xml:",innerxml"`
 }

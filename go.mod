@@ -3,6 +3,8 @@ module verifone-soap
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/pkg/errors v0.8.1
+	github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24
 	github.com/spf13/afero v1.2.1 // indirect
 	github.com/spf13/viper v1.3.1
 	github.com/stretchr/testify v1.3.0 // indirect
