@@ -1,3 +1,4 @@
+// Massively simplified version of https://github.com/tiaguinho/gosoap
 package gosoap
 
 import (
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"golang.org/x/net/html/charset"
 )
@@ -104,7 +106,9 @@ func (c *Client) doRequest() ([]byte, error) {
 	}
 
 	if c.HttpClient == nil {
-		c.HttpClient = &http.Client{}
+		c.HttpClient = &http.Client{
+			Timeout: time.Second * 60,
+		}
 	}
 
 	req.ContentLength = int64(len(c.payload))
