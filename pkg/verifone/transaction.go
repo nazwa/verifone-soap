@@ -216,6 +216,10 @@ type VgTransactionResponse struct {
 }
 
 func (this Client) TransactionRequest(v VgTransactionRequest) (response VgTokenRegistrationResponse, err error) {
+	v.Xsi = Xsi
+	v.Xsd = Xsd
+	v.Ns = Ns
+
 	err = this.Call(MsgTypeTransaction, v, &response)
 
 	return

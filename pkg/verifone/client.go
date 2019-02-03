@@ -8,11 +8,14 @@ import (
 )
 
 const (
-	MsgTypeGenSession         = "VGGENERATESESSIONREQUEST"
-	MsgTypeRegisterToken      = "VGTOKENREGISTRATIONREQUEST"
-	MsgTypeTransaction        = "VGTRANSACTIONREQUEST"
-	MsgTypeConfirmTransaction = "VGCONFIRMATIONREQUEST"
-	MsgTypeRejectTransaction  = "VGREJECTIONREQUEST"
+	MsgTypeGenSession                   = "VGGENERATESESSIONREQUEST"
+	MsgTypeRegisterToken                = "VGTOKENREGISTRATIONREQUEST"
+	MsgTypeGetCardDetails               = "VGGETCARDDETAILSREQUEST"
+	MsgTypeTransaction                  = "VGTRANSACTIONREQUEST"
+	MsgTypeConfirmTransaction           = "VGCONFIRMATIONREQUEST"
+	MsgTypeRejectTransaction            = "VGREJECTIONREQUEST"
+	MsgTypePayerAuthEnrollmentCheck     = "VGPAYERAUTHENROLLMENTCHECKREQUEST"
+	MsgTypePayerAuthAuthenticationCheck = "VGPAYERAUTHAUTHENTICATIONCHECKREQUEST"
 
 	Xsi = "http://www.w3.org/2001/XMLSchema-instance"
 	Xsd = "http://www.w3.org/2001/XMLSchema"
