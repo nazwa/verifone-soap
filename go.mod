@@ -1,4 +1,4 @@
-module verifone-soap
+module github.com/nazwa/verifone-soap
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect

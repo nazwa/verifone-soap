@@ -2,8 +2,8 @@ package verifone
 
 import (
 	"encoding/xml"
-	"verifone-soap/pkg/gosoap"
 
+	"github.com/nazwa/verifone-soap/pkg/gosoap"
 	"github.com/pkg/errors"
 )
 

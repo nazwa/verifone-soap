@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"verifone-soap/pkg/verifone"
 
+	"github.com/nazwa/verifone-soap/pkg/verifone"
 	"github.com/spf13/viper"
 )
 
