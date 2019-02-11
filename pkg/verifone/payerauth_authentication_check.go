@@ -69,7 +69,7 @@ func (this Client) PayerAuthAuthenticationCheck(sessionGuid, merchantReference s
 		Enrolled:           enrollmentStatus,
 	}
 
-	err = this.Call(MsgTypePayerAuthAuthenticationCheck, v, &response)
+	err = this.Call(MsgTypePayerAuthAuthenticationCheck, v, &response, nil)
 
 	return
 }

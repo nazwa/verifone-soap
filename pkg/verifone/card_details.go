@@ -81,7 +81,7 @@ func (this Client) GetCardDetails(sessionGuid string) (response VgGetCardDetails
 		SessionGUID: sessionGuid,
 	}
 
-	err = this.Call(MsgTypeGetCardDetails, v, &response)
+	err = this.Call(MsgTypeGetCardDetails, v, &response, nil)
 
 	return
 }

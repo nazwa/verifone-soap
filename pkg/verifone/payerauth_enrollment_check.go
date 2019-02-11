@@ -101,7 +101,7 @@ func (this Client) PayerAuthEnrollmentCheck(v VgPayerAuthEnrollmentCheckRequest)
 	v.Xsd = Xsd
 	v.Ns = Ns
 
-	err = this.Call(MsgTypePayerAuthEnrollmentCheck, v, &response)
+	err = this.Call(MsgTypePayerAuthEnrollmentCheck, v, &response, nil)
 
 	return
 }

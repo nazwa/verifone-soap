@@ -220,7 +220,7 @@ func (this Client) TransactionRequest(v VgTransactionRequest) (response VgTokenR
 	v.Xsd = Xsd
 	v.Ns = Ns
 
-	err = this.Call(MsgTypeTransaction, v, &response)
+	err = this.Call(MsgTypeTransaction, v, &response, nil)
 
 	return
 }

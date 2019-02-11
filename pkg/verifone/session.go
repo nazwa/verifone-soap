@@ -25,6 +25,9 @@ type VgGenerateSessionResponse struct {
 	SessionGUID string `xml:"sessionguid"`
 	// Session passcode. 32 character hexadecimal string
 	SessionPasscode string `xml:"sessionpasscode"`
+
+	// Manually added processingDB
+	ProcessingDB string
 }
 
 func (this Client) BeginSession(returnUrl string, fullCapture bool) (response VgGenerateSessionResponse, err error) {
@@ -36,7 +39,12 @@ func (this Client) BeginSession(returnUrl string, fullCapture bool) (response Vg
 		FullCapture: fullCapture,
 	}
 
-	err = this.Call(MsgTypeGenSession, v, &response)
+	var clientHeader ClientHeaderResponse
 
+	err = this.Call(MsgTypeGenSession, v, &response, &clientHeader)
+
+	if err == nil {
+		response.ProcessingDB = clientHeader.ProcessingDB
+	}
 	return
 }

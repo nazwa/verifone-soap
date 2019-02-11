@@ -55,7 +55,7 @@ func (this Client) RegisterToken(sessionGuid, merchantReference, expiryDate, tok
 		CashBack:            cashback,
 	}
 
-	err = this.Call(MsgTypeRegisterToken, v, &response)
+	err = this.Call(MsgTypeRegisterToken, v, &response, nil)
 
 	return
 }

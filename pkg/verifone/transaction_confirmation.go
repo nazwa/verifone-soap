@@ -33,7 +33,7 @@ func (this Client) ConfirmTransaction(sessionGuid, transactionId, offlineAuthCod
 		Gratuity:        gratuity,
 	}
 
-	err = this.Call(MsgTypeConfirmTransaction, v, &response)
+	err = this.Call(MsgTypeConfirmTransaction, v, &response, nil)
 
 	return
 }

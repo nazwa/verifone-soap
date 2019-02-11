@@ -22,9 +22,16 @@ type ProcessMsg struct {
 	Message interface{}
 }
 
+type ClientHeaderResponse struct {
+	XMLName      xml.Name `xml:"ClientHeader"`
+	ProcessingDB string   `xml:"ProcessingDB"`
+	SendAttempt  int64    `xml:"SendAttempt"`
+}
+
 type ProcessMsgResult struct {
-	MsgType string `xml:"MsgType"`
-	MsgData []byte `xml:"MsgData"`
+	ClientHeader *ClientHeaderResponse
+	MsgType      string
+	MsgData      []byte
 }
 
 type ProcessMsgResponse struct {

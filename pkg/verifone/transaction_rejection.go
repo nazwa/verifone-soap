@@ -45,7 +45,7 @@ func (this Client) RejectTransaction(sessionGuid, transactionId string) (respons
 		TransactionId: transactionId,
 	}
 
-	err = this.Call(MsgTypeRejectTransaction, v, &response)
+	err = this.Call(MsgTypeRejectTransaction, v, &response, nil)
 
 	return
 }
