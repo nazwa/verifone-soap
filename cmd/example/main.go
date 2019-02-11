@@ -23,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	} else {
-		log.Println("session:", session.SessionGUID, session.SessionPasscode, session.ProcessingDB)
+		log.Printf("session: %s, %s, %s\n\r", session.SessionGUID, session.SessionPasscode, session.ProcessingDB)
 	}
 
 	token, err := client.RegisterToken(session.SessionGUID, "", "", "20022019", true, false, false)

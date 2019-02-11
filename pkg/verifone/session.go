@@ -39,10 +39,9 @@ func (this Client) BeginSession(returnUrl string, fullCapture bool) (response Vg
 		FullCapture: fullCapture,
 	}
 
-	var clientHeader ClientHeaderResponse
+	clientHeader := &ClientHeaderResponse{}
 
-	err = this.Call(MsgTypeGenSession, v, &response, &clientHeader)
-
+	err = this.Call(MsgTypeGenSession, v, &response, clientHeader)
 	if err == nil {
 		response.ProcessingDB = clientHeader.ProcessingDB
 	}

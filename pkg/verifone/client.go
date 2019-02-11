@@ -64,7 +64,7 @@ type MessageClientHeader struct {
 	Passcode   string `xml:"Passcode"`
 }
 
-func (this Client) Call(msgType string, msgData interface{}, target interface{}, headerTarget interface{}) (err error) {
+func (this Client) Call(msgType string, msgData interface{}, target interface{}, headerTarget *ClientHeaderResponse) (err error) {
 	var body []byte
 	body, err = xml.Marshal(msgData)
 	if err != nil {
@@ -104,7 +104,7 @@ func (this Client) Call(msgType string, msgData interface{}, target interface{},
 	err = xml.Unmarshal(response.ProcessMsgResult.MsgData, &target)
 
 	if headerTarget != nil {
-		headerTarget = response.ProcessMsgResult.ClientHeader
+		*headerTarget = *response.ProcessMsgResult.ClientHeader
 	}
 
 	return
