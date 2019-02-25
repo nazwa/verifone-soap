@@ -61,7 +61,7 @@ func (c *Client) Call(p interface{}) (err error) {
 		return err
 	}
 	c.payload = []byte(Doctype + string(c.payload))
-
+	// fmt.Println(string(c.payload))
 	b, err := c.doRequest()
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func (c *Client) Unmarshal(v interface{}) error {
 	if len(c.Body) == 0 {
 		return fmt.Errorf("Body is empty")
 	}
-
+	// fmt.Println(string(c.Body))
 	var f ResponseSoapFault
 	xml.Unmarshal(c.Body, &f)
 	if f.Code != "" {

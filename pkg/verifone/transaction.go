@@ -215,7 +215,7 @@ type VgTransactionResponse struct {
 	GdetHash string `xml:"gdethash"`
 }
 
-func (this Client) TransactionRequest(v VgTransactionRequest) (response VgTokenRegistrationResponse, err error) {
+func (this Client) TransactionRequest(v VgTransactionRequest) (response VgTransactionResponse, err error) {
 	v.Xsi = Xsi
 	v.Xsd = Xsd
 	v.Ns = Ns

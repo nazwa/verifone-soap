@@ -30,11 +30,12 @@ type Config struct {
 }
 
 type Client struct {
-	config Config
-	soap   *gosoap.Client
+	config       Config
+	soap         *gosoap.Client
+	processingDb string
 }
 
-func NewClient(cfg Config) *Client {
+func NewClient(cfg Config, processingDb string) *Client {
 	if cfg.Url == "" {
 		cfg.Url = "https://txn-cst.cxmlpg.com/XML4/commideagateway.asmx?WSDL"
 	}
@@ -45,23 +46,28 @@ func NewClient(cfg Config) *Client {
 	}
 
 	return &Client{
-		config: cfg,
-		soap:   soap,
+		config:       cfg,
+		soap:         soap,
+		processingDb: processingDb,
 	}
 }
 
 func (this Client) getClientHeader() MessageClientHeader {
 	return MessageClientHeader{
-		SystemGUID: this.config.SystemGUID,
-		SystemID:   this.config.SystemID,
-		Passcode:   this.config.Passcode,
+		SystemGUID:    this.config.SystemGUID,
+		SystemID:      this.config.SystemID,
+		Passcode:      this.config.Passcode,
+		ProcessingDB:  this.processingDb,
+		CDATAWrapping: false,
 	}
 }
 
 type MessageClientHeader struct {
-	SystemGUID string `xml:"SystemGUID"`
-	SystemID   string `xml:"SystemID"`
-	Passcode   string `xml:"Passcode"`
+	SystemGUID    string `xml:"SystemGUID"`
+	SystemID      string `xml:"SystemID"`
+	Passcode      string `xml:"Passcode"`
+	ProcessingDB  string `xml:"ProcessingDB"`
+	CDATAWrapping bool   `xml:"CDATAWrapping"`
 }
 
 func (this Client) Call(msgType string, msgData interface{}, target interface{}, headerTarget *ClientHeaderResponse) (err error) {
