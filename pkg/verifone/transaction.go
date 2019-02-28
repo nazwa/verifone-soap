@@ -138,7 +138,7 @@ type VgTransactionRequest struct {
 	// Field checked by Address Verification System (AVS) add on module, ignored if module not enabled. AVS configuration can make this field mandatory. Numerics from house name\number
 	AvsHouse string `xml:"avshouse,omitempty"`
 	// Field checked by Address Verification System (AVS) add on module, ignored if module not enabled. AVS configuration can make this field mandatory. Numerics from postcode only
-	AvsPostCode string `xml:"avspostcode,omitempty"`
+	AvsPostCode int64 `xml:"avspostcode,omitempty"`
 	// Card expiry month and year (YYMM)
 	ExpiryDate string `xml:"expirydate"`
 	// Total value of transaction including tax. Applies to: Purchase, Refund, Cheque Guarantee, Cash Advance, and Purchase with Cash Back. With PWCB, field should only contain the values of the goods or services provided. Decimal point recommended but optional, e.g.: 1.23 = £1.23 123 = £123 000001.23 = £1.23 Only positive values. Values will be truncated to the correct number of decimal places required for the transaction currency (set by the merchant account being used)
