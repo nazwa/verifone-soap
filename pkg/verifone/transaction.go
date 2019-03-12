@@ -102,6 +102,8 @@ type VgTransactionRequest struct {
 	TxnType TxnType `xml:"txntype"`
 	// This is the three digit currency code (numeric).
 	TransactionCurrencyCode string `xml:"transactioncurrencycode"`
+	// In accordance with the numeric values defined in ISO 3166 (see Appendix C)
+	TerminalCountryCode string `xml:"terminalcountrycode"`
 	// This is the functionality supported by the terminal in the format of that defined by the APACS standard.
 	// These are:
 	// 3291 – Only Swiped and Contact ICC unattended
