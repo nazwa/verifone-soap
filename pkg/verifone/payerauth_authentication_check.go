@@ -8,8 +8,9 @@ type EnrollmentStatus string
 type AuthenticationStatus string
 
 const (
-	EnrollmentStatusYes EnrollmentStatus = "Y"
-	EnrollmentStatusNo  EnrollmentStatus = "N"
+	EnrollmentStatusUnknown EnrollmentStatus = "U"
+	EnrollmentStatusYes     EnrollmentStatus = "Y"
+	EnrollmentStatusNo      EnrollmentStatus = "N"
 
 	AuthenticationStatusSuccess              AuthenticationStatus = "Y"
 	AuthenticationStatusFailure              AuthenticationStatus = "N"

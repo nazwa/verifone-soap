@@ -81,6 +81,24 @@ const (
 	CvcResultNotMatched  CvcResult = 4
 )
 
+type PayerAuthAuxilaryData struct {
+	XMLName xml.Name `xml:"payerauthauxilarydata"`
+	// Indicates if the transaction authenticated or not:
+	// Y – Customer was successfully authenticated
+	// N – Customer failed authentication, and the transaction declined
+	// A – Attempts processing. APACS message will show verified enrollment but cardholder not participating
+	// U – Enrollment could not be completed, due to technical or other problem authenticationcavv
+	AuthenticationStatus AuthenticationStatus `xml:"authenticationstatus"`
+	// Contains 28-byte Base-64 encoded Cardholder Authentication Verification Value (CAVV)
+	AuthenticationCavv string `xml:"authenticationcavv"`
+	// 2 digit Electronic Commerce Indicator (ECI) value
+	AuthenticationEci string `xml:"authenticationeci"`
+	// Data to populate authorisation message
+	AtsData string `xml:"atsdata"`
+	// TransactionID should be populated with the PayerAuthRequestID provided in the PayerAuth EnrollmentCheck Response
+	TransactionID int64 `xml:"transactionid"`
+}
+
 type VgTransactionRequest struct {
 	XMLName xml.Name `xml:"vgtransactionrequest"`
 	Xsi     string   `xml:"xmlns:xsi,attr"`
@@ -159,7 +177,7 @@ type VgTransactionRequest struct {
 	// Employee identifier
 	EmployeeId string `xml:"employeeid,omitempty"`
 	// Payer Authentication auxiliary data. This field is conditional upon the capture method/transaction type. If Payer Authentication is performed this data must be supplied, even for non-supporting card schemes. Capture methods such as ICC will not require Payer Auth auxiliary data to be supplied
-	PayerAuthAuxilaryData string `xml:"payerauthauxilarydata"`
+	PayerAuthAuxilaryData *PayerAuthAuxilaryData `xml:"payerauthauxilarydata,omitempty"`
 	// Denotes if the transaction is a procurement card/VGIS transaction.
 	VgisTransaction *bool `xml:"vgistransaction"`
 	// Account passcode, supplied by Verifone
