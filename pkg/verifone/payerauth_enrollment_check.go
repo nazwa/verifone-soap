@@ -2,8 +2,6 @@ package verifone
 
 import (
 	"encoding/xml"
-
-	"github.com/shopspring/decimal"
 )
 
 type Acquirer int64
@@ -62,6 +60,10 @@ type VgPayerAuthEnrollmentCheckRequest struct {
 	McmMerchantBankId string `xml:"mcmmerchantbankid,omitempty"`
 	//This field contains a unique ID number which is assigned by the signing merchant’s acquirer, bank or processor. This field is used to identify the merchant within the SecureCode system
 	McmMerchantNumber string `xml:"mcmmerchantnumber,omitempty"`
+
+	McmMerchantPassword  string `xml:"mcmmerchantpassword,omitempty"`
+	VisaMerchantPassword string `xml:"visamerchantpassword,omitempty"`
+
 	// Expiry date. Mandatory for partial capture but not required for full capture
 	ExpiryDate string `xml:"expirydate,omitempty"`
 	// This field contains a three digit number assigned by the signing member or processor to identify the merchant's authorisation currency. Based on ISO Country Code – 3166
@@ -73,7 +75,7 @@ type VgPayerAuthEnrollmentCheckRequest struct {
 	// This field contains the exact content of the HTTP useragent header as sent to the merchant from the cardholder's user agent. This field is only required if the cardholder's user agent supplied a value.
 	BrowserUserAgentHeader string `xml:"browseruseragentheader"`
 	// Amount to be authorised with implied decimal point ie. £10.00 is represented as 1000 and 0.10 is represented as 10.
-	TransactionAmount decimal.Decimal `xml:"transactionamount"`
+	TransactionAmount int64 `xml:"transactionamount"`
 	//The transaction amount is to be presented with all currencyspecific punctuation as this will be the number displayed to the customer. E.g. 10.00
 	TransactionDisplayAmount string `xml:"transactiondisplayamount"`
 	// This field contains a description of the goods or services being purchased, determined by the merchant
