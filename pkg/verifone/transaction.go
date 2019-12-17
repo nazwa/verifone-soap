@@ -88,15 +88,15 @@ type PayerAuthAuxiliaryData struct {
 	// N – Customer failed authentication, and the transaction declined
 	// A – Attempts processing. APACS message will show verified enrollment but cardholder not participating
 	// U – Enrollment could not be completed, due to technical or other problem authenticationcavv
-	AuthenticationStatus AuthenticationStatus `xml:"authenticationstatus"`
+	AuthenticationStatus AuthenticationStatus `xml:"authenticationstatus,omitempty"`
 	// Contains 28-byte Base-64 encoded Cardholder Authentication Verification Value (CAVV)
-	AuthenticationCavv string `xml:"authenticationcavv"`
+	AuthenticationCavv string `xml:"authenticationcavv,omitempty"`
 	// 2 digit Electronic Commerce Indicator (ECI) value
-	AuthenticationEci string `xml:"authenticationeci"`
+	AuthenticationEci string `xml:"authenticationeci,omitempty"`
 	// Data to populate authorisation message
-	AtsData string `xml:"atsdata"`
+	AtsData string `xml:"atsdata,omitempty"`
 	// TransactionID should be populated with the PayerAuthRequestID provided in the PayerAuth EnrollmentCheck Response
-	TransactionID int64 `xml:"transactionid"`
+	TransactionID int64 `xml:"transactionid,omitempty"`
 }
 
 type VgTransactionRequest struct {
