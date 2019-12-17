@@ -17,7 +17,7 @@ func main() {
 		SystemGUID: viper.GetString("verifone.SystemGUID"),
 		Passcode:   viper.GetString("verifone.Passcode"),
 		Url:        viper.GetString("verifone.Url"),
-	})
+	}, "")
 
 	session, err := client.BeginSession(viper.GetString("verifone.Redirect"), true)
 	if err != nil {

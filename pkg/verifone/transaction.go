@@ -81,8 +81,8 @@ const (
 	CvcResultNotMatched  CvcResult = 4
 )
 
-type PayerAuthAuxilaryData struct {
-	XMLName xml.Name `xml:"payerauthauxilarydata"`
+type PayerAuthAuxiliaryData struct {
+	XMLName xml.Name `xml:"payerauthauxiliarydata"`
 	// Indicates if the transaction authenticated or not:
 	// Y – Customer was successfully authenticated
 	// N – Customer failed authentication, and the transaction declined
@@ -177,7 +177,7 @@ type VgTransactionRequest struct {
 	// Employee identifier
 	EmployeeId string `xml:"employeeid,omitempty"`
 	// Payer Authentication auxiliary data. This field is conditional upon the capture method/transaction type. If Payer Authentication is performed this data must be supplied, even for non-supporting card schemes. Capture methods such as ICC will not require Payer Auth auxiliary data to be supplied
-	PayerAuthAuxilaryData *PayerAuthAuxilaryData `xml:"payerauthauxilarydata,omitempty"`
+	PayerAuthAuxiliaryData *PayerAuthAuxiliaryData `xml:"payerauthauxiliarydata,omitempty"`
 	// Denotes if the transaction is a procurement card/VGIS transaction.
 	VgisTransaction *bool `xml:"vgistransaction"`
 	// Account passcode, supplied by Verifone
