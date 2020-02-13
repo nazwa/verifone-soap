@@ -31,7 +31,7 @@ type VgGetCardDetailsResponse struct {
 	// Echo from request
 	FullCapture bool `xml:"fullcapture"`
 	// Card scheme identifier
-	MkCardSchemeId int64 `xml:"mkcardschemeid"`
+	MkCardSchemeId SchemeID `xml:"mkcardschemeid"`
 	// Card scheme name
 	SchemeName string `xml:"schemename"`
 	// Length of issue number, if required

@@ -10,7 +10,7 @@ type TxnType string
 type ApacsCapability string
 type CaptureMethod int64
 type ProcessingIdentifier int64
-type SchemeName string
+type SchemeID int64
 type TxnResult string
 type AvsResult int64
 type CvcResult int64
@@ -49,13 +49,14 @@ const (
 	ProcessingIdentifierAuthOnly      ProcessingIdentifier = 2
 	ProcessingIdentifierChargeOnly    ProcessingIdentifier = 3
 
-	SchemeNameAmex                                SchemeName = "1"
-	SchemeNameVisaOrRoiVisaDebit                  SchemeName = "2"
-	SchemeNameMasterCardOrMasterCardOne           SchemeName = "3"
-	SchemeNameMaestro                             SchemeName = "4"
-	SchemeNameVisaDebitOrRoiVisaDebitOrVisaCredit SchemeName = "6"
-	SchemeNameMasterCardDebit                     SchemeName = "49"
-	SchemeNameInvalid                             SchemeName = "999"
+	SchemeIDAmex                                SchemeID = 1
+	SchemeIDVisaOrRoiVisaDebit                  SchemeID = 2
+	SchemeIDMasterCardOrMasterCardOne           SchemeID = 3
+	SchemeIDMaestro                             SchemeID = 4
+	SchemeIDVisaDebitOrRoiVisaDebitOrVisaCredit SchemeID = 6
+	SchemeIDAmexCpc                             SchemeID = 36
+	SchemeIDMasterCardDebit                     SchemeID = 49
+	SchemeIDInvalid                             SchemeID = 999
 
 	TxnResultError       TxnResult = "ERROR"
 	TxnResultReferral    TxnResult = "REFERRAL"
@@ -204,7 +205,7 @@ type VgTransactionResponse struct {
 	// Terminal ID
 	Tid string `xml:"tid"`
 	// Card scheme name 1 – Amex 2 – Visa / ROI Visa Debit 3 – MasterCard / MasterCard One 4 – Maestro 5 – Diners / Discover 6 – Visa Debit / ROI Visa Debit / Visa Credit 7 – JCB 8 – BT Test Host 9 – Time / TradeUK Account card 10 – Solo (ceased) 11 – Electron 21 – Visa CPC 23 – AllStar CPC 24 – EDC/Maestro (INT) 25 – Laser 26 – LTF 27 – CAF (Charity Aids Foundation) 28 – Creation (Sears / Duet) 29 – Clydesdale Financial Services 30 – Style card 31 – BHS Gold 32 – Mothercare Card 33 – Arcadia Group cards (Privilege, Shareholder & Staff) 35 – BA AirPlus 36 – Amex CPC 41 – FCUK card (Style) 48 – Premier Inn Business Account card 49 – MasterCard Debit 50 – Stax Charge card 51 – IKEA Home card (IKANO) 52 – MasterCard One 53 – HFC Store card 999 – Invalid Card Range
-	SchemeName SchemeName `xml:"schemename"`
+	SchemeID SchemeID `xml:"SchemeID"`
 	// Transaction message number (equivalent of EFTSN from previous versions of the Web Service)
 	MessageNumber string `xml:"messagenumber"`
 	// The Authorisation code that is returned by the bank. This will be blank if the transaction is declined and if the transaction value is below the floor limit.
